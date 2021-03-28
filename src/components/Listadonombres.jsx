@@ -7,10 +7,15 @@ const Listadonombres = () => {
     const [listanombres, setListaNombres] = useState([])
     const [modoEdicion, setModoEdicion] = useState(false)
     const [id,setId] = useState('')
+    const [error, setError] = useState(null)
 
     //genera un nuevo objeto y lo introduce
     const addNombre = (e) => {
         e.preventDefault()
+        if(!nombre.trim()){
+            setError('El campo nombre esta vacio')
+            return
+        }   
         const nuevoNombre = {
             id:uniqid(),
             tituloNombre:nombre 
@@ -18,6 +23,7 @@ const Listadonombres = () => {
         }
         setListaNombres([...listanombres,nuevoNombre])
         setNombre('')
+        setError(null)
     }
 
     //boton para borrar 
@@ -38,6 +44,8 @@ const Listadonombres = () => {
         const NuevoArray = listanombres
         .map(item => item.id === id ? {id:id, tituloNombre:nombre} : item)
         setListaNombres(NuevoArray)
+        setModoEdicion(false)
+        setNombre('')
     }
 
 
@@ -86,6 +94,16 @@ const Listadonombres = () => {
                         value={modoEdicion ? 'Editar nombre' : 'Registrar nombre'}
                         />
                     </form>
+                    {
+                        error != null ? (
+                            <div className='alert alert-danger'>
+                                {error}
+                            </div>
+                        ): 
+                        (
+                            <div></div>
+                        )
+                    }
                 </div>   
                 
             </div>
